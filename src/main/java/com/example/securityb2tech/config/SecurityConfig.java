@@ -4,6 +4,7 @@ import com.example.securityb2tech.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,15 +24,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .formLogin()
-                .and()
                 .httpBasic()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/home").authenticated()
-                .antMatchers("/dashboard").permitAll()
-                .antMatchers("/register").permitAll()
-                .anyRequest().denyAll();
+                .antMatchers("/register", "/dashboard", "/login").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .csrf().disable();
 
     }
 
@@ -44,5 +43,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
+    }
+
+    @Override
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 }
