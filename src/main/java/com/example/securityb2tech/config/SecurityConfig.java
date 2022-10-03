@@ -1,6 +1,7 @@
 package com.example.securityb2tech.config;
 
 import com.example.securityb2tech.security.CustomAuthenticationProvider;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,10 +13,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
-//@RequiredArgsConstructor
+@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
-//    private final CustomUserDetailsService userDetailsService;
 
     @Autowired
     private  CustomAuthenticationProvider customAuthenticationProvider;
@@ -26,7 +25,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/register", "/dashboard", "/login").permitAll()
+                .antMatchers("/register", "/login").permitAll()
+                .antMatchers("/home").hasAuthority("READ")
+                .antMatchers("/dashboard").hasAnyAuthority("UPDATE", "DELETE")
                 .anyRequest().authenticated()
                 .and()
                 .csrf().disable();
