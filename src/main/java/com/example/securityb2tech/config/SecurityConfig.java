@@ -26,8 +26,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/register", "/login").permitAll()
-                .antMatchers("/home").hasAuthority("READ")
-                .antMatchers("/dashboard").hasAnyAuthority("UPDATE", "DELETE")
+                .antMatchers("/home").hasRole("ADMIN")
+                .antMatchers("/dashboard").hasAnyRole("ADMIN", "USER")
                 .anyRequest().authenticated()
                 .and()
                 .csrf().disable();

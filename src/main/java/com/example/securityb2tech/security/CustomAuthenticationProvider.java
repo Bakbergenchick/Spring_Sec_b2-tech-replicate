@@ -36,7 +36,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
                         new UsernameNotFoundException("User wit email:" + email + " not found"));
 
         if (encoder.matches(password, user.getPassword())){
-            List<GrantedAuthority> authoritySet = new ArrayList<>();
+            Set<GrantedAuthority> authoritySet = new HashSet<>();
 
             for (Authority auth:
                  user.getAuthoritySet()) {

@@ -1,10 +1,8 @@
 package com.example.securityb2tech.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.List;
@@ -13,6 +11,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class Authority {
@@ -23,9 +22,7 @@ public class Authority {
     private String authority;
 
     @JsonIgnore
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "user_auth_join",
-            joinColumns = @JoinColumn(name = "authority_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private List<Users> usersSet;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private Users user;
 }
