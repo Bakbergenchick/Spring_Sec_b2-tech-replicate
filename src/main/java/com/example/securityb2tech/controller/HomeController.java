@@ -7,6 +7,7 @@ import com.example.securityb2tech.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,11 +33,11 @@ public class HomeController {
 
     private final UserRepository userRepository;
     private final AuthorityRepo authorityRepo;
-
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
     @GetMapping("/home")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public String home(){
         return "You're welcome to home page!";
     }
@@ -76,6 +77,7 @@ public class HomeController {
         return new ResponseEntity<HttpStatus>(HttpStatus.OK);
     }
     @GetMapping("/dashboard")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public String dashboard(){
         return "You're welcome to dashboard!";
     }
